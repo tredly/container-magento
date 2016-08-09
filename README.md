@@ -4,7 +4,7 @@ Version 1.0.3 August 9th 2016
 
 ## Installation
 
-One Click Install available from your Armory on Tredly Command Center <cc.tredlycom>
+One Click Install available from your Armory on Tredly Command Center <https://cc.tredlycom>
 
 Can also be installed on open source version of Tredly v1.1.0 <https://github.com/tredly/tredly> or later
 
