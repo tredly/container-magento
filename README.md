@@ -1,10 +1,12 @@
-## Magento Container for Tredly
+## Official Magento Container for Tredly
 
 Version 1.0.3 August 9th 2016
 
 ## Installation
 
-Requires Tredly 1.1.0 <https://github.com/tredly/tredly> or later
+On Click Install available on Tredly Command Center <cc.tredlycom>
+
+Can also be installed on open source version of Tredly v1.1.0 <https://github.com/tredly/tredly> or later
 
 ## Modifying container options**
 
