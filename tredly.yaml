@@ -1,0 +1,129 @@
+---
+  container:
+    compatibleWith: "1.1.0"
+    # Container Name
+    name: "Magento"
+    # No auto publish
+    buildOptions:
+      publish: false
+    # Custom DNS is not required
+    customDNS: []
+    startOrder: 1
+    # Resource limits set for a small Magento store
+    resourceLimits:
+      maxCpu: "2"
+      maxRam: "10G"
+      maxHdd: "10G"
+    technicalOptions: {}
+    # This container cannot be replicated because it's not configured to allow that.
+    replicate: false
+    firewall:
+      # No need to limit connections to certain IP/Subnet
+      ipv4Whitelist: []
+      allowPorts:
+        tcp:
+          out: []
+          in:
+            - 80
+            - 443
+        udp:
+          out: []
+          in: []
+    proxy:
+      layer7Proxy:
+        -
+          url: "magento.example.com"
+          # Don't need websockets
+          enableWebsocket: false
+          # Site is HTTP so no cert
+          cert: null
+          # Need to upload product pictures so make 10MB
+          maxFileSize: "10m"
+          # Redirect HTTP to HTTPS
+          redirects:
+            -
+              cert: null
+              url: "http://magento.example.com"
+      # Layer4 Proxy not required
+      layer4Proxy: false
+
+    # Operations to be run when container is:
+    operations:
+      onCreate:
+        ### MariaDB installation and configuration
+        -
+        # Install MariaDB
+          type: "installPackage"
+          value: "mariadb55-server"
+        -
+        # Copy sample configuration to working directory
+          type: "exec"
+          value: "cp /usr/local/share/mysql/my-default.cnf /etc/my.cnf"
+        -
+        # Copy install.sql file into container
+          type: "fileFolderMapping"
+          source: "/install.sql"
+          target: "/usr/local/"
+        -
+        # Enable MariaDB
+          type: "exec"
+          value: "sysrc mysql_enable=yes"
+        -
+        # Start MariaDb
+          type: "exec"
+          value: "service mysql-server start"
+        -
+        # # Initialise MariaDb
+          type: "exec"
+          value: "cd /usr/local/ && mysql_install_db --user=mysql --basedir=/usr/local --basedir=/usr/local --datadir=/var/db/mysql"
+        -
+        # Create database and set root user and password in MariaDb for Magento
+          type: "exec"
+          value: "mysql -uroot < /usr/local/install.sql"
+        
+        ### nginx installation
+        -
+        # Install nginx
+          type: "installPackage"
+          value: "nginx"
+        -
+        # Copy files to configure nginx
+          type: "fileFolderMapping"
+          source: "/nginx/nginx.conf"
+          target: "/usr/local/etc/nginx/"
+        -
+        # Enable nginx
+          type: "exec"
+          value: "sysrc nginx_enable=yes"
+        -
+        # Start nginx
+          type: "exec"
+          value: "service nginx start"
+        
+        ### php-fpm installation and configuration
+        -
+        # Install php-fpm
+          type: "installPackage"
+          value: "php-fpm"
+        -
+        # Copy php.ini file from container files
+          type: "fileFolderMapping"
+          source: "/php.ini"
+          target: "/usr/local/etc/"
+        -
+        # Enable php-fpm
+          type: "exec"
+          value: "sysrc php_fpm_enable=yes"
+        -
+        # Start php-fpm
+          type: "exec"
+          value: "service php-fpm start"
+
+        ### Magento installation
+        -
+          type: "installPackage"
+          value: "magento"
+
+      onDestroy: []
+      onStart: []
+      onStop: []
