@@ -8,11 +8,11 @@ One Click Install available from your Armory on [Tredly Command Center](https://
 
 Can also be installed on open source version of [Tredly v1.1.0](https://github.com/tredly/tredly) or later
 
-## Modifying container options**
+## Modifying container options
 
 Container options can be changed in tredly.yaml
 
-## Configuring this Container**
+## Configuring this Container
 
 Container configuration can be changed in tredly.yaml file
 
