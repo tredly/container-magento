@@ -8,6 +8,7 @@
       publish: false
     # Custom DNS is not required
     customDNS: []
+    #
     startOrder: 1
     # Resource limits set for a small Magento store
     resourceLimits:
