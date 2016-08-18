@@ -1,6 +1,6 @@
 ## Official Magento Container for Tredly
 
-Version 1.0.3 August 9th 2016
+Version 1.0.4 August 18th 2016
 
 ## Installation
 
